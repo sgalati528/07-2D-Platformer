@@ -22,23 +22,12 @@ __meta__ = {
 }
 
 [node name="Play Again" type="Button" parent="."]
-margin_left = 256.0
+margin_left = 512.0
 margin_top = 384.0
-margin_right = 384.0
+margin_right = 640.0
 margin_bottom = 416.0
 text = "Play Again?"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Quit" type="Button" parent="."]
-margin_left = 736.0
-margin_top = 384.0
-margin_right = 864.0
-margin_bottom = 416.0
-text = "Quit"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 [connection signal="pressed" from="Play Again" to="." method="_on_Play_Again_pressed"]
-[connection signal="pressed" from="Quit" to="." method="_on_Quit_pressed"]

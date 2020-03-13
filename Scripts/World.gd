@@ -12,6 +12,9 @@ func change_health(h):
 func change_score(s):
 	score += s
 	emit_signal("score_changed")
+	
+	
+	
 #save for later 
 #func SavePressed():
 #	get_node("/root/SaveSystem").saveValue("Values", "ValueOne")

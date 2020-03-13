@@ -42,7 +42,7 @@ func _physics_process(delta):
 	if is_on_floor():
 		if Input.is_action_just_pressed("ui_up"):
 			motion.y = jump_force
-			change_score(20)
+			
 	
 	motion = move_and_slide(motion,UP)
 	
@@ -51,3 +51,7 @@ func _physics_process(delta):
 func die():
 	queue_free()
 	get_tree().change_scene("res://Scenes/GameOver.tscn")
+
+
+
+
