@@ -12,11 +12,4 @@ func increase_score(s):
 #		get_tree().change_scene("res://Scenes/End.tscn")
 #
 #
-#func _on_Player_health_changed():
-#	var h = get_node("/root/World/Player").health
-#	$Health.text = "Health: " + str(h)
-#
-#
-#func _on_Player_score_changed():
-#	var s = get_node("/root/World/Player").score
-#	$Score.text = "Score: " + str(s)
+

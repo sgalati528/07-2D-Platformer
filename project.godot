@@ -19,6 +19,12 @@ config/name="Template"
 run/main_scene="res://Scenes/World.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+SaveSystem="*res://Scripts/SaveSystem.gd"
+Score="*res://Scripts/Score.gd"
+Lives="*res://Scripts/Lives.gd"
+
 [input]
 
 ui_left={

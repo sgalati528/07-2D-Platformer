@@ -14,5 +14,7 @@ func _get_configuration_warning() -> String:
 func teleport() -> void: 
 	animplayer.play("fade_in")
 	yield(animplayer,"animation_finished")
+	get_node("/root/SaveSystem").saveValue_score("Values", "ValueOne")
+	get_node("/root/SaveSystem").saveValue_health("Values", "ValueOne")
 	get_tree().change_scene_to(next_scene)
 

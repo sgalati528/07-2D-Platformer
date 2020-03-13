@@ -11,5 +11,6 @@ func update_score():
 
 func increase_score(s):
 	scoreE += int(s)
+	
 	update_score()
 

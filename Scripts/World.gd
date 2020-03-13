@@ -13,11 +13,9 @@ func change_score(s):
 	score += s
 	emit_signal("score_changed")
 	
+func _ready():
+	get_node("/root/SaveSystem").saveValue_score("Values", "ValueOne")
+	get_node("/root/SaveSystem").loadValue_score("Values", "ValueOne")
+	get_node("/root/SaveSystem").saveValue_health("Values", "ValueOne")
+	get_node("/root/SaveSystem").loadValue_health("Values", "ValueOne")
 	
-	
-#save for later 
-#func SavePressed():
-#	get_node("/root/SaveSystem").saveValue("Values", "ValueOne")
-
-#func LoadPressed():
-#	get_node("/root/SaveSystem").loadValue("Values", "ValueOne")
