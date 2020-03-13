@@ -1,18 +1,17 @@
 extends Node
 
+export var health = 3
 export var score = 0
-export var lives = 3
 
-func increase_score(s):
-	score += int(s)
-	find_node("Score").update_score()
-	
-func decrease_lives():
-	lives -= 1
-	find_node("Lives").update_lives()
-	if lives <= 0:
-		get_tree().change_scene("res://Scenes/End.tscn")
+func change_health(h):
+	health += h
+	emit_signal("health_changed")
+	if health <= 0:
+		$Player.die()
 
+func change_score(s):
+	score += s
+	emit_signal("score_changed")
 #save for later 
 #func SavePressed():
 #	get_node("/root/SaveSystem").saveValue("Values", "ValueOne")
