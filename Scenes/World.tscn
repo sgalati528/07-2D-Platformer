@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://CaveTiles.tres" type="TileSet" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=11]
 [ext_resource path="res://Scenes/Portal2D.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=13]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -21,37 +22,37 @@ region = Rect2( 0, 0, 319, 368 )
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 0, 0, 319, 368 )
+region = Rect2( 0, 736, 319, 368 )
 
 [sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 319, 0, 319, 368 )
+region = Rect2( 319, 736, 319, 368 )
 
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 638, 0, 319, 368 )
+region = Rect2( 638, 736, 319, 368 )
 
 [sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 957, 0, 319, 368 )
+region = Rect2( 0, 0, 319, 368 )
 
 [sub_resource type="AtlasTexture" id=6]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 0, 736, 319, 368 )
+region = Rect2( 319, 0, 319, 368 )
 
 [sub_resource type="AtlasTexture" id=7]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 319, 736, 319, 368 )
+region = Rect2( 638, 0, 319, 368 )
 
 [sub_resource type="AtlasTexture" id=8]
 flags = 4
 atlas = ExtResource( 3 )
-region = Rect2( 638, 736, 319, 368 )
+region = Rect2( 957, 0, 319, 368 )
 
 [sub_resource type="AtlasTexture" id=9]
 flags = 4
@@ -80,15 +81,15 @@ animations = [ {
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
-"loop": true,
-"name": "run",
-"speed": 4.0
-}, {
-"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
 "name": "jump",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "run",
+"speed": 4.0
 }, {
 "frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
 "loop": true,
@@ -98,19 +99,23 @@ animations = [ {
 
 [sub_resource type="RectangleShape2D" id=14]
 
-[sub_resource type="ParticlesMaterial" id=17]
+[sub_resource type="ParticlesMaterial" id=15]
 flag_disable_z = true
 gravity = Vector3( 0, 98, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 
-[sub_resource type="PhysicsMaterial" id=18]
+[sub_resource type="PhysicsMaterial" id=16]
 
-[sub_resource type="RectangleShape2D" id=16]
+[sub_resource type="RectangleShape2D" id=17]
 extents = Vector2( 32, 32 )
 
 [node name="World" type="Node"]
 script = ExtResource( 9 )
+
+[node name="Portal2D" parent="." instance=ExtResource( 12 )]
+position = Vector2( 2048, 864 )
+collision_layer = 7
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( 1088, 352 )
@@ -183,17 +188,17 @@ scale = Vector2( 2, 2.5 )
 shape = SubResource( 14 )
 
 [node name="Particles2D" type="Particles2D" parent="Player"]
-process_material = SubResource( 17 )
+process_material = SubResource( 15 )
 
 [node name="DeathWall" type="RigidBody2D" parent="."]
 visible = false
-position = Vector2( 672, 480 )
+position = Vector2( 768, 480 )
 rotation = 0.0252799
 scale = Vector2( 2.33054, 1.72721 )
 collision_layer = 7
 collision_mask = 7
 mass = 355.647
-physics_material_override = SubResource( 18 )
+physics_material_override = SubResource( 16 )
 gravity_scale = 0.0
 contacts_reported = 1
 contact_monitor = true
@@ -203,17 +208,16 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="DeathWall"]
+visible = false
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 0.562805, -7.41052 )
 scale = Vector2( 7.89224, -0.607053 )
 texture = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DeathWall"]
+visible = false
 position = Vector2( 12.7396, -10.8984 )
-scale = Vector2( 7.89224, -0.607053 )
+scale = Vector2( 9.29962, -0.669532 )
 polygon = PoolVector2Array( 32, -32, 32, 32, -32, 32, -32, -32, 31, -32 )
 
 [node name="Walls" type="Node2D" parent="."]
@@ -234,7 +238,7 @@ modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wall7Big"]
-shape = SubResource( 16 )
+shape = SubResource( 17 )
 
 [node name="Wall7Big2" type="StaticBody2D" parent="Walls"]
 position = Vector2( 102.869, 426.801 )
@@ -250,25 +254,33 @@ modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wall7Big2"]
-shape = SubResource( 16 )
+shape = SubResource( 17 )
 
 [node name="snow" type="Node2D" parent="."]
 
 [node name="Snowflake2" parent="snow" instance=ExtResource( 4 )]
 position = Vector2( 384, 32 )
-scale = Vector2( 1, 1 )
 
 [node name="Snowflake4" parent="snow" instance=ExtResource( 4 )]
 position = Vector2( 1600, 480 )
-scale = Vector2( 1, 1 )
 
 [node name="Snowflake3" parent="snow" instance=ExtResource( 4 )]
 position = Vector2( 2048, 224 )
-scale = Vector2( 1, 1 )
 
-[node name="Portal2D" parent="." instance=ExtResource( 12 )]
-position = Vector2( 2016, 864 )
+[node name="Area2D" parent="." instance=ExtResource( 13 )]
+position = Vector2( 1792, 480 )
 collision_layer = 7
+collision_mask = 7
+
+[node name="Area2D2" parent="." instance=ExtResource( 13 )]
+position = Vector2( 1760, 864 )
+collision_layer = 7
+collision_mask = 7
+
+[node name="Area2D3" parent="." instance=ExtResource( 13 )]
+position = Vector2( 64, 288 )
+collision_layer = 7
+collision_mask = 7
 [connection signal="health_changed" from="Player" to="Player/Camera2D" method="_on_Player_health_changed"]
 [connection signal="score_changed" from="Player" to="Player/Camera2D" method="_on_Player_score_changed"]
 [connection signal="score_changed" from="Player" to="." method="_on_Player_score_changed"]
@@ -277,3 +289,6 @@ collision_layer = 7
 [connection signal="body_entered" from="snow/Snowflake2" to="Player" method="_on_Snowflake2_body_entered"]
 [connection signal="body_entered" from="snow/Snowflake4" to="Player" method="_on_Snowflake2_body_entered"]
 [connection signal="body_entered" from="snow/Snowflake3" to="Player" method="_on_Snowflake2_body_entered"]
+[connection signal="body_entered" from="Area2D" to="Player" method="_on_Area2D_body_entered"]
+[connection signal="body_entered" from="Area2D2" to="Player" method="_on_Area2D_body_entered"]
+[connection signal="body_entered" from="Area2D3" to="Player" method="_on_Area2D_body_entered"]

@@ -26,6 +26,7 @@ func change_score(s):
 	$Camera2D/Score.increase_score(s)
 	emit_signal("score_changed")
 
+# warning-ignore:unused_argument
 func _physics_process(delta):
 	#gravity
 	motion.y += gravity
@@ -50,6 +51,7 @@ func _physics_process(delta):
 
 func die():
 	queue_free()
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/GameOver.tscn")
 
 
@@ -57,5 +59,12 @@ func die():
 
 
 
+# warning-ignore:unused_argument
 func _on_Snowflake2_body_entered(body):
 	change_score(50)
+
+
+# warning-ignore:unused_argument
+func _on_Area2D_body_entered(body):
+	print("come on")
+	change_health()
