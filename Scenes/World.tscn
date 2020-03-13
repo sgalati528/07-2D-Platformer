@@ -267,7 +267,7 @@ position = Vector2( 2048, 224 )
 scale = Vector2( 1, 1 )
 
 [node name="Portal2D" parent="." instance=ExtResource( 12 )]
-position = Vector2( -32, 128 )
+position = Vector2( 2016, 864 )
 collision_layer = 7
 [connection signal="health_changed" from="Player" to="Player/Camera2D" method="_on_Player_health_changed"]
 [connection signal="score_changed" from="Player" to="Player/Camera2D" method="_on_Player_score_changed"]
