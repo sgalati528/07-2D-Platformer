@@ -12,12 +12,9 @@ func _ready():
 
 
 func _physics_process(delta):
-	var colliding = get_colliding_bodies()
-	for c in colliding:
-		if c.name == "Player":
-			get_parent().get_parent().change_score(score)
-	queue_free()
-
-
-func _on_CollisionPolygon2D_tree_entered():
-	pass # Replace with function body.
+	var bodies = get_colliding_bodies()
+	for body in bodies:
+		if body.name == "Player":
+			print("JAISDK")
+			body.change_score(score)
+		queue_free()

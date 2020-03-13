@@ -1,9 +1,9 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://CaveTiles.tres" type="TileSet" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Assets/PenguinSprite.png" type="Texture" id=3]
-[ext_resource path="res://Assets/background.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Snowflake.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scripts/DeathWall.gd" type="Script" id=5]
 [ext_resource path="res://Assets/744.jpg" type="Texture" id=6]
 [ext_resource path="res://Scripts/Lives.gd" type="Script" id=7]
@@ -11,6 +11,8 @@
 [ext_resource path="res://Scripts/World.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=11]
+[ext_resource path="res://Assets/snowflake.png" type="Texture" id=12]
+[ext_resource path="res://Scripts/Snowflake1.gd" type="Script" id=13]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -108,25 +110,15 @@ orbit_velocity_random = 0.0
 [sub_resource type="RectangleShape2D" id=16]
 extents = Vector2( 32, 32 )
 
+[sub_resource type="Animation" id=20]
+resource_name = "fade_out"
+
+[sub_resource type="PhysicsMaterial" id=19]
+
 [node name="World" type="Node"]
 script = ExtResource( 9 )
 
-[node name="Node2D" type="Node2D" parent="."]
-
-[node name="background" type="Sprite" parent="Node2D"]
-visible = false
-position = Vector2( -128, 288 )
-scale = Vector2( 1.22453, 1.06637 )
-texture = ExtResource( 4 )
-
-[node name="background2" type="Sprite" parent="Node2D"]
-visible = false
-position = Vector2( 512, 288 )
-rotation = -3.14159
-scale = Vector2( 1.25971, -1.06777 )
-texture = ExtResource( 4 )
-
-[node name="744" type="Sprite" parent="."]
+[node name="Background" type="Sprite" parent="."]
 position = Vector2( 1088, 352 )
 scale = Vector2( 0.727333, 0.617333 )
 texture = ExtResource( 6 )
@@ -265,8 +257,38 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wall7Big2"]
 shape = SubResource( 16 )
+
+[node name="Snowflake2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 384, 31.9999 )
+scale = Vector2( 1, 1 )
+
+[node name="AnimationPlayer" parent="Snowflake2" index="2"]
+anims/fade_out = SubResource( 20 )
+
+[node name="Snowflake" type="RigidBody2D" parent="."]
+position = Vector2( 928, -736 )
+scale = Vector2( 1, 1 )
+collision_layer = 7
+collision_mask = 7
+physics_material_override = SubResource( 19 )
+gravity_scale = 128.0
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Snowflake"]
+texture = ExtResource( 12 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Snowflake"]
+polygon = PoolVector2Array( 9, -60.1, 16, -61.4, 16, -59.1, 19, -57.1, 19, -50.7, 19.4, -51, 25.2, -51, 31, -49.6, 31, -47.8, 34, -44.8, 34, -40, 39.2, -45, 43, -45, 48, -38.1, 55, -39.4, 55, -37, 60, -33, 60, -25, 56.2, -22.1, 61.4, -13, 58, -13, 55, -9, 51.1, -9, 57, -5.1, 57, -2, 58.6, 4, 55.9, 4, 48.9, 10.4, 56, 8.3, 56, 11, 60, 14, 60, 18.7, 56.9, 22.5, 60.8, 34, 58, 34, 54, 39, 47.7, 39, 40.3, 45.4, 38, 44.3, 38, 43.1, 34, 40.4, 34, 45.1, 22, 52.3, 20, 51.2, 20, 50.3, 19, 49.9, 19, 58, 16.8, 58, 12.8, 62, 10.7, 62, 9.4, 61.6, 7.5, 64, -7.2, 64, -19, 57.1, -19, 49.9, -22.4, 52, -24.5, 52, -33, 47.2, -33, 44, -33.3, 40, -34.2, 40, -39.2, 45, -43, 45, -48, 38.1, -55, 39.4, -55, 37, -60, 33, -60, 25, -56.2, 22.1, -61.4, 13, -58, 13, -55, 9, -51.2, 9, -57, 5.1, -57, 2.4, -58.4, -5, -55.7, -5, -48.7, -10.8, -56, -8.1, -56, -10.8, -60, -12.8, -60, -19.8, -57.3, -22.5, -60, -25.2, -60, -35, -57.8, -35, -53.8, -39, -49, -39, -39.1, -45.3, -37, -44.2, -37, -43, -34, -40.6, -34, -44.8, -26.8, -52, -24.6, -52, -17.5, -48.7, -19, -50.2, -19, -58, -17.1, -58, -15.1, -61, -9.8, -61, -7, -63.8, 7, -64 )
 [connection signal="health_changed" from="Player" to="Player/Camera2D" method="_on_Player_health_changed"]
 [connection signal="score_changed" from="Player" to="Player/Camera2D" method="_on_Player_score_changed"]
 [connection signal="score_changed" from="Player" to="." method="_on_Player_score_changed"]
 [connection signal="body_entered" from="DeathWall" to="Player" method="_on_DeathWall_body_entered"]
 [connection signal="body_shape_entered" from="DeathWall" to="Player" method="_on_DeathWall_body_shape_entered"]
+[connection signal="body_entered" from="Snowflake2" to="Player" method="_on_Snowflake2_body_entered"]
+
+[editable path="Snowflake2"]

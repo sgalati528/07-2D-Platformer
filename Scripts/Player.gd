@@ -55,3 +55,7 @@ func die():
 
 
 
+
+
+func _on_Snowflake2_body_entered(body):
+	change_score(50)
