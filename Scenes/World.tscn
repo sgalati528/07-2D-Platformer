@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://CaveTiles.tres" type="TileSet" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -14,18 +14,23 @@
 [ext_resource path="res://Scenes/Portal2D.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/World2.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scripts/Load.gd" type="Script" id=15]
+[ext_resource path="res://Scripts/Save.gd" type="Script" id=16]
+[ext_resource path="res://Assets/media.io_run_under_fire.wav" type="AudioStream" id=17]
+[ext_resource path="res://Assets/Droplets3.png" type="Texture" id=18]
 
-[sub_resource type="RectangleShape2D" id=14]
+[sub_resource type="RectangleShape2D" id=1]
 
-[sub_resource type="ParticlesMaterial" id=15]
+[sub_resource type="ParticlesMaterial" id=2]
 flag_disable_z = true
 gravity = Vector3( 0, 98, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
+color = Color( 0.94902, 0.996078, 1, 1 )
 
-[sub_resource type="PhysicsMaterial" id=16]
+[sub_resource type="PhysicsMaterial" id=3]
 
-[sub_resource type="RectangleShape2D" id=17]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 32, 32 )
 
 [node name="World" type="Node"]
@@ -57,9 +62,6 @@ position = Vector2( -160, 64 )
 collision_layer = 4
 collision_mask = 4
 script = ExtResource( 11 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="Player"]
 scale = Vector2( 0.08, 0.08 )
@@ -72,7 +74,31 @@ position = Vector2( -256, -320 )
 current = true
 script = ExtResource( 10 )
 
-[node name="Health" type="Label" parent="Player/Camera2D"]
+[node name="Save" type="Button" parent="Player/Camera2D"]
+visible = false
+margin_left = -192.0
+margin_top = -288.0
+margin_right = -96.0
+margin_bottom = -256.0
+text = "Save"
+script = ExtResource( 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Load" type="Button" parent="Player/Camera2D"]
+visible = false
+margin_left = 96.0
+margin_top = -288.0
+margin_right = 192.0
+margin_bottom = -256.0
+text = "Load"
+script = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lives" type="Label" parent="Player/Camera2D"]
 anchor_left = -0.094
 anchor_top = 0.053
 anchor_right = -0.094
@@ -101,12 +127,16 @@ __meta__ = {
 [node name="Score Counter" type="Node" parent="Player/Camera2D"]
 
 [node name="PhysicsShape" type="CollisionShape2D" parent="Player"]
+position = Vector2( 0, -1.90735e-06 )
 scale = Vector2( 3, 3 )
-shape = SubResource( 14 )
+shape = SubResource( 1 )
 
 [node name="Particles2D" type="Particles2D" parent="Player"]
-visible = false
-process_material = SubResource( 15 )
+scale = Vector2( 0.25, 0.2 )
+amount = 4
+lifetime = 2.0
+process_material = SubResource( 2 )
+texture = ExtResource( 18 )
 
 [node name="DeathWall" type="RigidBody2D" parent="."]
 visible = false
@@ -116,7 +146,7 @@ scale = Vector2( 2.33054, 1.72721 )
 collision_layer = 7
 collision_mask = 7
 mass = 355.647
-physics_material_override = SubResource( 16 )
+physics_material_override = SubResource( 3 )
 gravity_scale = 0.0
 contacts_reported = 1
 contact_monitor = true
@@ -156,7 +186,7 @@ modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wall7Big"]
-shape = SubResource( 17 )
+shape = SubResource( 4 )
 
 [node name="Wall7Big2" type="StaticBody2D" parent="Walls"]
 position = Vector2( 102.869, 426.801 )
@@ -172,7 +202,7 @@ modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wall7Big2"]
-shape = SubResource( 17 )
+shape = SubResource( 4 )
 
 [node name="snow" type="Node2D" parent="."]
 
@@ -199,9 +229,16 @@ collision_mask = 7
 position = Vector2( 64, 288 )
 collision_layer = 7
 collision_mask = 7
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
 [connection signal="health_changed" from="Player" to="Player/Camera2D" method="_on_Player_health_changed"]
-[connection signal="score_changed" from="Player" to="." method="_on_Player_score_changed"]
 [connection signal="score_changed" from="Player" to="Player/Camera2D" method="_on_Player_score_changed"]
+[connection signal="score_changed" from="Player" to="." method="_on_Player_score_changed"]
+[connection signal="pressed" from="Player/Camera2D/Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="Player/Camera2D/Save" to="Player/Camera2D/Save" method="_on_Save_pressed"]
+[connection signal="pressed" from="Player/Camera2D/Load" to="." method="_on_Load_pressed"]
+[connection signal="pressed" from="Player/Camera2D/Load" to="Player/Camera2D/Load" method="_on_Load_pressed"]
 [connection signal="body_entered" from="DeathWall" to="Player" method="_on_DeathWall_body_entered"]
 [connection signal="body_shape_entered" from="DeathWall" to="Player" method="_on_DeathWall_body_shape_entered"]
 [connection signal="body_entered" from="snow/Snowflake2" to="Player" method="_on_Snowflake2_body_entered"]

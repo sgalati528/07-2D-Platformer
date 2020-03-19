@@ -1,12 +1,12 @@
 extends Node
 
-export var health = 3
-export var score = 0
+onready var lives = get_node("/root/Global").lives
+onready var score = get_node("/root/Global").score
 
 func change_health(h):
-	health += h
+	lives += h
 	emit_signal("health_changed")
-	if health <= 0:
+	if lives <= 0:
 		$Player.die()
 
 func change_score(s):
@@ -14,8 +14,13 @@ func change_score(s):
 	emit_signal("score_changed")
 	
 func _ready():
-	get_node("/root/SaveSystem").saveValue_score("Values", "ValueOne")
-	get_node("/root/SaveSystem").loadValue_score("Values", "ValueOne")
-	get_node("/root/SaveSystem").saveValue_health("Values", "ValueOne")
-	get_node("/root/SaveSystem").loadValue_health("Values", "ValueOne")
-	
+	$Music.playing = true
+
+
+func _on_Save_pressed():
+	get_node("/root/Global").save_data()
+
+func _on_Load_pressed():
+	get_node("/root/Global").load_data()
+
+

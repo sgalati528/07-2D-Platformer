@@ -2,8 +2,8 @@ extends KinematicBody2D
 
 const UP = Vector2(0,-1)
 var motion = Vector2()
-export var health = 3
-export var score = 0
+onready var lives = get_node("/root/Global").lives
+onready var score = get_node("/root/Global").score
 export var speed = 300
 export var gravity = 20
 export var jump_force = -550
@@ -16,15 +16,17 @@ func _ready():
 	emit_signal("health_changed")
 	emit_signal("score_changed")
 
-func change_health():
-	$Camera2D/Health.decrease_lives()
+func change_lives():
+	$Camera2D/Lives.decrease_lives()
 	emit_signal("health_changed")
-	if health <= 0:
+	get_node("/root/Global").save_data()
+	if get_node("/root/Global").lives == 0:
 		die()
 
 func change_score(s):
 	$Camera2D/Score.increase_score(s)
 	emit_signal("score_changed")
+	get_node("/root/Global").save_data()
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
@@ -50,12 +52,11 @@ func _physics_process(delta):
 
 
 func die():
+	get_node("/root/Global").score = 0
+	get_node("/root/Global").lives = 3
+	get_node("/root/Global").save_data()
 	queue_free()
-# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/GameOver.tscn")
-
-
-
 
 
 
@@ -66,5 +67,4 @@ func _on_Snowflake2_body_entered(body):
 
 # warning-ignore:unused_argument
 func _on_Area2D_body_entered(body):
-	print("come on")
-	change_health()
+	change_lives()

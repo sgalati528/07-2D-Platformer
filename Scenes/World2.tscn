@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://CaveTiles.tres" type="TileSet" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://Assets/Icey.png" type="Texture" id=12]
 [ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/Portal2D.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Assets/media.io_run_under_fire.wav" type="AudioStream" id=15]
+[ext_resource path="res://Assets/Droplets3.png" type="Texture" id=16]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -100,7 +102,13 @@ animations = [ {
 
 [sub_resource type="RectangleShape2D" id=14]
 
-[sub_resource type="RectangleShape2D" id=17]
+[sub_resource type="ParticlesMaterial" id=16]
+flag_disable_z = true
+gravity = Vector3( 0, 98, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+
+[sub_resource type="RectangleShape2D" id=15]
 extents = Vector2( 32, 32 )
 
 [node name="World" type="Node"]
@@ -155,7 +163,7 @@ playing = true
 current = true
 script = ExtResource( 10 )
 
-[node name="Health" type="Label" parent="Player/Camera2D"]
+[node name="Lives" type="Label" parent="Player/Camera2D"]
 anchor_left = -0.094
 anchor_top = 0.053
 anchor_right = -0.094
@@ -187,7 +195,14 @@ __meta__ = {
 scale = Vector2( 3, 3 )
 shape = SubResource( 14 )
 
+[node name="Particles2D" type="Particles2D" parent="Player"]
+scale = Vector2( 0.25, 0.25 )
+lifetime = 2.0
+process_material = SubResource( 16 )
+texture = ExtResource( 16 )
+
 [node name="Walls" type="Node2D" parent="."]
+visible = false
 position = Vector2( -32, -160 )
 scale = Vector2( 3.33085, 1.72721 )
 
@@ -204,7 +219,7 @@ modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Wall7Big"]
-shape = SubResource( 17 )
+shape = SubResource( 15 )
 
 [node name="snow" type="Node2D" parent="."]
 
@@ -234,6 +249,9 @@ collision_mask = 7
 position = Vector2( 512, 832 )
 collision_layer = 7
 collision_mask = 7
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
 [connection signal="health_changed" from="Player" to="Player/Camera2D" method="_on_Player_health_changed"]
 [connection signal="score_changed" from="Player" to="." method="_on_Player_score_changed"]
 [connection signal="score_changed" from="Player" to="Player/Camera2D" method="_on_Player_score_changed"]

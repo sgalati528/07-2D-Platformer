@@ -1,16 +1,14 @@
 extends Label
 
-export var scoreE = 0
 
 func _ready(): 
 	update_score()
 
 func update_score():
-	text = "Score: " + str(scoreE)
+	text = "Score: " + str(get_node("/root/Global").score)
 	
 
 func increase_score(s):
-	scoreE += int(s)
-	
+	get_node("/root/Global").score += int(s)
 	update_score()
 
